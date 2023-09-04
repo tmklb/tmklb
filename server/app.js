@@ -1,5 +1,5 @@
 import { db } from './firebase-config.js';
-import { collection, query, where, getDocs } from 'firebase/firestore';
+import { collection, doc, query, where, getDoc } from 'firebase/firestore';
 import cors from 'cors';
 import express from 'express';
 
@@ -15,38 +15,36 @@ async function setup() {
 
 await setup();
 
-app.get("/api/users/payments", async (req, res) => {
+app.get("/api/users/payments/:period", async (req, res) => {
   try {
+    const period = req.params.period;
     // validate the parameter
-    const firstDate = req.query.firstDate;
-    const lastDate = req.query.lastDate;
-    if (!(firstDate && firstDate.length === 8) || !(lastDate && lastDate.length === 8)) {
-      throw new Error(`Invalid period: First Date: ${firstDate}, Last Date: ${lastDate}`);
+    if (!(period && period.length === 8)) {
+      throw new Error(`Invalid period: ${period}`);
     }
 
-    if (parseInt(firstDate) === NaN || parseInt(lastDate) === NaN) {
-      throw new Error(`Period is NaN: First Date: ${firstDate}, Last Date: ${lastDate}`);
+    if (parseInt(period) === NaN) {
+      throw new Error(`Period is NaN: ${period}`);
     }
 
-    const usersCollection = collection(db, "payments");
-    const q = query(usersCollection, 
-      where("date", ">=", parseInt(firstDate)),
-      where("date", "<=", parseInt(lastDate)));
+    const year = period.substring(0, 4);
+    const month = parseInt(period.substring(4, 6)) + '';
 
-    const qs = await getDocs(q); // query snapshot
+    const docRef = doc(db, "payments", year);
+    const paymentsDoc = await getDoc(docRef);
+    const data = paymentsDoc.data();
     let total = 0;
 
-    qs.forEach((doc) => {
-      console.log(doc.data());
-      const amount = doc.data().amount;
-      total += amount;
-    });
+    if (data && data[month]) {
+      data[month].forEach((payment) => {
+        total += payment.amount;
+      });
+    }
 
     res.json({
       status: 'success',
       total: total,
-      firstDate: firstDate,
-      lastDate: lastDate
+      period: period
     });
   } catch (e) {
     console.error(e);

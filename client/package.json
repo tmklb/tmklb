@@ -13,6 +13,7 @@
     "@cubejs-client/core": "^0.31.0",
     "astro": "^3.0.7",
     "axios": "^1.5.0",
-    "chart.js": "^4.0.0"
+    "chart.js": "^4.0.0",
+    "monthpicker-lite-js": "^1.2.0"
   }
 }
