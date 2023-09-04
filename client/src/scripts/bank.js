@@ -8,8 +8,8 @@ const convertDate = function(d) {
 }
 
 async function getData(date) {
-  const baseURL = "http://localhost:3001/api/users/payments/";
-  //const baseURL = "https://tmklb.onrender.com/api/users/payments/"
+  //const baseURL = "http://localhost:3001/api/users/payments/";
+  const baseURL = "https://tmklb.onrender.com/api/users/payments/"
   const res = await axios.get(baseURL + `${convertDate(date)}`);
   return res.data;
 }
