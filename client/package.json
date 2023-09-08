@@ -1,19 +1,22 @@
 {
-  "name": "a",
+  "name": "tmklb",
   "type": "module",
   "version": "0.0.1",
   "scripts": {
-    "dev": "astro dev",
-    "start": "astro dev",
-    "build": "astro build",
-    "preview": "astro preview",
-    "astro": "astro"
+    "build": "next build",
+    "dev": "next dev",
+    "start": "next start"
   },
   "dependencies": {
-    "@cubejs-client/core": "^0.31.0",
-    "astro": "^3.0.7",
+    "next": "latest",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
     "axios": "^1.5.0",
     "chart.js": "^4.0.0",
+    "@cubejs-client/core": "^0.31.0",
     "monthpicker-lite-js": "^1.2.0"
+  },
+  "engines": {
+    "node": ">=18"
   }
 }
