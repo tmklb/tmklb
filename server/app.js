@@ -1,7 +1,8 @@
 import { db } from './firebase-config.js';
-import { collection, doc, query, where, getDoc } from 'firebase/firestore';
+import { collection, query, where, getDocs } from 'firebase/firestore';
 import cors from 'cors';
 import express from 'express';
+import { scheduler, job } from './scheduler.js';
 
 const app = express();
 app.use(cors());
@@ -11,40 +12,43 @@ const port = process.env.PORT || 3001;
 async function setup() {
   // start server
   app.listen(port);
+
+  // start database update scheduler
+  scheduler.addSimpleIntervalJob(job);
 }
 
 await setup();
 
-app.get("/api/users/payments/:period", async (req, res) => {
+app.get("/api/users/payments", async (req, res) => {
   try {
-    const period = req.params.period;
     // validate the parameter
-    if (!(period && period.length === 8)) {
-      throw new Error(`Invalid period: ${period}`);
+    const firstDate = req.query.firstDate;
+    const lastDate = req.query.lastDate;
+    if (!(firstDate && firstDate.length === 8) || !(lastDate && lastDate.length === 8)) {
+      throw new Error(`Invalid period: First Date: ${firstDate}, Last Date: ${lastDate}`);
     }
 
-    if (parseInt(period) === NaN) {
-      throw new Error(`Period is NaN: ${period}`);
+    if (parseInt(firstDate) === NaN || parseInt(lastDate) === NaN) {
+      throw new Error(`Period is NaN: First Date: ${firstDate}, Last Date: ${lastDate}`);
     }
 
-    const year = period.substring(0, 4);
-    const month = parseInt(period.substring(4, 6)) + '';
+    const usersCollection = collection(db, "payments");
+    const q = query(usersCollection, 
+      where("date", ">=", parseInt(firstDate)),
+      where("date", "<=", parseInt(lastDate)));
 
-    const docRef = doc(db, "payments", year);
-    const paymentsDoc = await getDoc(docRef);
-    const data = paymentsDoc.data();
+    const qs = await getDocs(q); // query snapshot
     let total = 0;
 
-    if (data && data[month]) {
-      data[month].forEach((payment) => {
-        total += payment.amount;
-      });
-    }
+    qs.forEach((doc) => {
+      total += doc.data().amount;
+    });
 
     res.json({
       status: 'success',
       total: total,
-      period: period
+      firstDate: firstDate,
+      lastDate: lastDate
     });
   } catch (e) {
     console.error(e);

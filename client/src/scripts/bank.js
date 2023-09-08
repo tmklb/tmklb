@@ -7,10 +7,10 @@ const convertDate = function(d) {
   return d.getFullYear() * 1e4 + (d.getMonth() + 1) * 100 + d.getDate() + '';
 }
 
-async function getData(date) {
-  //const baseURL = "http://localhost:3001/api/users/payments/";
-  const baseURL = "https://tmklb.onrender.com/api/users/payments/"
-  const res = await axios.get(baseURL + `${convertDate(date)}`);
+async function getData(firstDate, lastDate) {
+  //const baseURL = "http://localhost:3001/api/users/payments";
+  const baseURL = "https://tmklb.onrender.com/api/users/payments"
+  const res = await axios.get(baseURL + `?firstDate=${firstDate}&lastDate=${lastDate}`);
   return res.data;
 }
 
@@ -26,7 +26,12 @@ const monthpicker = new MonthPicker(document.getElementById('calendar'));
 monthpicker.setTheme('light');
 monthpicker.setCloseOnSelect(true);
 monthpicker.addCallback(function() {
-  getData(monthpicker.getDate()).then((data) => {
+
+  const currentDate = monthpicker.getDate()
+  const firstDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+  const lastDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
+
+  getData(convertDate(firstDate), convertDate(lastDate)).then((data) => {
     const total = data.total;
     console.log(total);
   
@@ -40,10 +45,10 @@ monthpicker.addCallback(function() {
   
     chart.data = {
       labels: [
-        'Events - 40%',
-        'Investments - 30%',
-        'Emergency - 20%',
-        'Donations - 10%'
+        'Events',
+        'Investments',
+        'Emergency',
+        'Donations'
       ],
       datasets: [{
         label: 'Bank',

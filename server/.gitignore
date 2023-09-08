@@ -1,5 +1,4 @@
 /node_modules
-/utils/payees.json
-/utils/node_modules
+/utils
 /secrets
 .env
