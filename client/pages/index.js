@@ -2,13 +2,15 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 
 import Table from '../components/Table';
+import DatePicker from '../components/DatePicker';
+import Loader from '../components/Loader';
 
 import styles from '../styles/Bank.module.css';
-import DatePicker from '../components/DatePicker';
 
 export default function Home() {
-  const [total, setTotal] = useState('$');
+  const [total, setTotal] = useState('');
   const [payees, setPayees] = useState([]);
+  const [loadPayees, setLoadPayees] = useState(false);
 
   const baseUrl = "https://tmklb.onrender.com/api/users/payments";
   // const baseUrl = "http://localhost:3001/api/users/payments";
@@ -33,11 +35,17 @@ export default function Home() {
 
   return (
     <div className={styles.container}>
-      <div className={styles.total}>{total}</div>
+      <Loader hide={total !== ''}/>
+      <div className={styles.total + ' ' + (total === '' ? styles.hide : '')}>
+        {total}
+      </div>
       <DatePicker onMonthSelected={async (month, year) => {
 
         const firstDate = convertDate(new Date(year, month, 1));
         const lastDate = convertDate(new Date(year, month + 1, 0));
+
+        setPayees([]);
+        setLoadPayees(true);
 
         axios.get(baseUrl + `?firstDate=${firstDate}&lastDate=${lastDate}`)
         .then((data) => {
@@ -56,6 +64,7 @@ export default function Home() {
             });
           }
           setPayees(p);
+          setLoadPayees(false);
         });
       }} />
       <Table 
@@ -64,6 +73,7 @@ export default function Home() {
           rows: payees
         }}
       />
+      <Loader hide={!loadPayees}/>
     </div>
   );
 }

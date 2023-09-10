@@ -1,0 +1,64 @@
+/**
+ * ==============================================
+ * Dot Flashing
+ * https://codepen.io/nzbin/pen/GGrXbp
+ * https://github.com/nzbin
+ * ==============================================
+ */
+
+.container {
+  padding-top: 50px;
+  padding-bottom: 50px;
+}
+
+.container.hide {
+  display: none;
+}
+
+.dot_flashing {
+  position: relative;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: #9880ff;
+  color: #9880ff;
+  animation: dot-flashing 1s infinite linear alternate;
+  animation-delay: 0.5s;
+}
+.dot_flashing::before,
+.dot_flashing::after {
+  content: "";
+  display: inline-block;
+  position: absolute;
+  top: 0;
+}
+.dot_flashing::before {
+  left: -40px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: #9880ff;
+  color: #9880ff;
+  animation: dot-flashing 1s infinite alternate;
+  animation-delay: 0s;
+}
+.dot_flashing::after {
+  left: 40px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: #9880ff;
+  color: #9880ff;
+  animation: dot-flashing 1s infinite alternate;
+  animation-delay: 1s;
+}
+
+@keyframes dot-flashing {
+  0% {
+    background-color: #9880ff;
+  }
+  50%,
+  100% {
+    background-color: rgba(152, 128, 255, 0.2);
+  }
+}

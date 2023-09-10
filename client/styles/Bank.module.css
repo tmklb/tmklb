@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css?family=Bebas+Neue");
+/* @import url("https://fonts.googleapis.com/css?family=Bebas+Neue"); */
 
 .container {
   padding: 0 1rem;
@@ -10,9 +10,13 @@
 }
 
 .total {
-  font-family: "Bebas Neue";
+  font-family: 'Bebas Neue', sans-serif;
   font-size: 30vh;
   color: #212427;
+}
+
+.total.hide {
+  display: none;
 }
 
 @media (max-width: 600px) {
