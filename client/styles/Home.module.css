@@ -1,6 +1,6 @@
+@import url("https://fonts.googleapis.com/css?family=Bebas+Neue");
+
 .container {
-  min-height: 100vh;
-  padding: 0 0.5rem;
   display: flex;
   flex-direction: column;
   justify-content: center;

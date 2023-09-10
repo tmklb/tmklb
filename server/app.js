@@ -1,5 +1,5 @@
 import { db } from './firebase-config.js';
-import { collection, query, where, getDocs } from 'firebase/firestore';
+import { doc, collection, query, where, getDoc, getDocs } from 'firebase/firestore';
 import cors from 'cors';
 import express from 'express';
 import { scheduler, job } from './scheduler.js';
@@ -18,6 +18,26 @@ async function setup() {
 }
 
 await setup();
+
+app.get("/api/users/payments/total", async (req, res) => {
+  try {
+    const totalRef = doc(db, 'banks', 'total');
+    const totalDoc = await getDoc(totalRef);
+    if (totalDoc.exists()) {
+      res.json({
+        status: 'success',
+        total: totalDoc.data().amount,
+      });
+    } else {
+      res.json({
+        status: 'error',
+      });
+    }
+  } catch (e) {
+    console.error(e);
+    res.json({status: 'exception'});
+  }
+});
 
 app.get("/api/users/payments", async (req, res) => {
   try {
@@ -38,15 +58,15 @@ app.get("/api/users/payments", async (req, res) => {
       where("date", "<=", parseInt(lastDate)));
 
     const qs = await getDocs(q); // query snapshot
-    let total = 0;
+    let payees = [];
 
     qs.forEach((doc) => {
-      total += doc.data().amount;
+      payees.push(doc.data());
     });
 
     res.json({
       status: 'success',
-      total: total,
+      payees: payees,
       firstDate: firstDate,
       lastDate: lastDate
     });

@@ -1,0 +1,28 @@
+@import url("https://fonts.googleapis.com/css?family=Bebas+Neue");
+
+.container {
+  padding: 0 1rem;
+  padding-bottom: 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.total {
+  font-family: "Bebas Neue";
+  font-size: 30vh;
+  color: #212427;
+}
+
+@media (max-width: 600px) {
+  .total {
+    font-size: 20vh;
+  }
+}
+
+@media (max-width: 500px) {
+  .total {
+    font-size: 15vh;
+  }
+}

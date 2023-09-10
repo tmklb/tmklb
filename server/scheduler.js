@@ -112,44 +112,46 @@ const task = new AsyncTask(
           })
           .then(() => {
             console.log('Loop completed - Resolved');
+            
+            if (values.length > 0) {
+              const batch = writeBatch(db);
 
-            const batch = writeBatch(db);
+              const updateBank = function(name, amount) {
+                return new Promise(function(resolve) {
+                  const bankRef = doc(db, 'banks', name);
+                  getDoc(bankRef)
+                    .then((bankDoc) => {
+                      const oldAmount = bankDoc.data().amount;
+                      batch.set(bankRef, {amount: oldAmount + amount});
+                      resolve();
+                    });
+                }) 
+              };
 
-            const updateBank = function(name, amount) {
+              // update the bank records
               return new Promise(function(resolve) {
-                const bankRef = doc(db, 'banks', name);
-                getDoc(bankRef)
-                  .then((bankDoc) => {
-                    const oldAmount = bankDoc.data().amount;
-                    batch.set(bankRef, {amount: oldAmount + amount});
-                    resolve();
-                  });
-              }) 
-            };
-
-            // update the bank records
-            return new Promise(function(resolve) {
-              updateBank('total', bank.total)
-                .then(resolve)
-            })
-            .then(() => {
-              return updateBank('events', bank.events);
-            })
-            .then(() => {
-              return updateBank('investments', bank.investments);
-            })
-            .then(() => {
-              return updateBank('emergency', bank.emergency);
-            })
-            .then(() => {
-              return updateBank('donations', bank.donations);
-            })
-            .then(() => {
-              return batch.commit();
-            })
-            .then(() => {
-              console.log('Batch complete')
-            });
+                updateBank('total', bank.total)
+                  .then(resolve)
+              })
+              .then(() => {
+                return updateBank('events', bank.events);
+              })
+              .then(() => {
+                return updateBank('investments', bank.investments);
+              })
+              .then(() => {
+                return updateBank('emergency', bank.emergency);
+              })
+              .then(() => {
+                return updateBank('donations', bank.donations);
+              })
+              .then(() => {
+                return batch.commit();
+              })
+              .then(() => {
+                console.log('Batch complete')
+              });
+            }
           }, () => {
             console.log('Loop completed - Rejected');
           });
