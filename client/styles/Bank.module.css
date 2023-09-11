@@ -12,14 +12,14 @@
 
 .header {
   font-family: 'Bebas Neue', sans-serif;
-  font-size: 8vh;
+  font-size: 80px;
   margin-top: 50px;
   margin-bottom: 25px;
 }
 
 .total {
   font-family: 'Bebas Neue', sans-serif;
-  font-size: 30vh;
+  font-size: 250px;
   color: #212427;
 }
 
@@ -27,14 +27,62 @@
   display: none;
 }
 
+@media (max-width: 1200px) {
+  .total {
+    font-size: 200px;
+  }
+
+  .header {
+    font-size: 80px;
+  }
+}
+
+@media (max-width: 1000px) {
+  .total {
+    font-size: 150px;
+  }
+
+  .header {
+    font-size: 80px;
+  }
+}
+
+@media (max-width: 800px) {
+  .total {
+    font-size: 120px;
+  }
+
+  .header {
+    font-size: 70px;
+  }
+}
+
 @media (max-width: 600px) {
   .total {
-    font-size: 20vh;
+    font-size: 100px;
+  }
+
+  .header {
+    font-size: 60px;
   }
 }
 
 @media (max-width: 500px) {
   .total {
-    font-size: 15vh;
+    font-size: 100px;
+  }
+
+  .header {
+    font-size: 60px;
+  }
+}
+
+@media (max-width: 400px) {
+  .total {
+    font-size: 80px;
+  }
+
+  .header {
+    font-size: 50px;
   }
 }
