@@ -13,8 +13,8 @@ export default function Home() {
   const [payees, setPayees] = useState([]);
   const [loadPayees, setLoadPayees] = useState(false);
 
-  // const baseUrl = "https://tmklb.onrender.com/api/users/payments";
-  const baseUrl = "http://localhost:3001/api/users/payments";
+  const baseUrl = "https://tmklb.onrender.com/api/users/payments";
+  //const baseUrl = "http://localhost:3001/api/users/payments";
 
   const convertDate = function(date) {
     return date.getFullYear() * 1e4 + (date.getMonth() + 1) * 100 + date.getDate() + '';
