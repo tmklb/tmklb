@@ -1,0 +1,50 @@
+/* a:active,
+a:hover {
+  color: #641123;
+} */
+
+.navbar {
+  width: 100%;
+  color: white;
+  font-family: sans-serif;
+  background-color: #212427;
+  margin-bottom: 50px;
+}
+
+.logo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 40px;
+}
+
+.logo img {
+  width: 224px;
+}
+
+.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  margin-left: 70px;
+  margin-right: 110px;
+  padding-top: 28px;
+  padding-bottom: 28px;
+}
+
+.nav_links {
+  display: flex;
+  list-style: none;
+}
+
+.nav_item a {
+  font-family: 'Heebo', sans-serif;
+  padding-left: 32px;
+}
+
+.logo a,
+.nav_item a {
+  display: inline-block;
+  text-decoration: none;
+}
+
+/* @media (max-width: 1000px) {} */

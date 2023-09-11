@@ -5,7 +5,9 @@ export default function Table(props) {
   (props.data.rows || []).forEach((item, index) => {
     rows.push(
       item.map((column, _index) => {
-        return <div key={_index} className={styles.table_cell}>{column}</div>
+        return <div key={_index} className={styles.table_cell}>
+          <span className={column.bold ? styles.bold : ''} onClick={column.onClick ? column.onClick : null}>{column.value}</span>
+        </div>
       })
     );
   });
@@ -21,6 +23,8 @@ export default function Table(props) {
           return <div key={index} className={styles.table_row}>{item}</div>
         })}
       </div>
+      {/* <div className={styles.table_footer}>
+      </div> */}
     </div>
   )
 }
