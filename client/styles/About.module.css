@@ -1,0 +1,70 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 50px;
+}
+
+.section .title {
+  font-size: 50px;
+  margin-bottom: 30px;
+}
+
+.section .info {
+  width: 650px;
+  font-size: 18px;
+  /*text-align: center;*/
+}
+
+.section .row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.section .row .item {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0 30px;
+}
+
+.section .row .item .profile {
+  position: relative;
+  overflow: hidden;
+  width: 200px;
+  height: 200px;
+  background-color: #9880ff;
+  border-radius: 50%;
+}
+
+.section .row .item .profile img {
+  width: 100%;
+  height: auto;
+
+  display: inline;
+  margin: 0 auto;
+}
+
+
+.section .row .item .name {
+  padding-top: 20px;
+}
+
+.section .row .item .subtitle {
+  font-size: 12px;
+}
+
+.spacer {
+  margin: 100px 0;
+}
