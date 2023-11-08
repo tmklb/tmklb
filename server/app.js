@@ -1,11 +1,12 @@
 import { db } from './firebase-config.js';
-import { doc, collection, query, where, getDoc, getDocs } from 'firebase/firestore';
+import { doc, collection, query, where, getDoc, addDoc, getDocs } from 'firebase/firestore';
 import cors from 'cors';
 import express from 'express';
 import { scheduler, job } from './scheduler.js';
 
 const app = express();
 app.use(cors());
+app.use(express.json());
 
 const port = process.env.PORT || 3001;
 
@@ -33,6 +34,26 @@ app.get("/api/users/payments/total", async (req, res) => {
         status: 'error',
       });
     }
+  } catch (e) {
+    console.error(e);
+    res.json({status: 'exception'});
+  }
+});
+
+app.get("/api/users/payments/total/:user", async (req, res) => {
+  try {
+    const paymentsCollection = collection(db, "payments");
+    const q = query(paymentsCollection, where("name", "==", req.params.user));
+    const qs = await getDocs(q); // query snapshot
+    let total = 0;
+    qs.forEach((doc) => {
+      total += doc.data().amount;
+    });
+    res.json({
+      status: 'success',
+      total: total,
+      name: req.params.user
+    });
   } catch (e) {
     console.error(e);
     res.json({status: 'exception'});
@@ -69,6 +90,65 @@ app.get("/api/users/payments", async (req, res) => {
       payees: payees,
       firstDate: firstDate,
       lastDate: lastDate
+    });
+  } catch (e) {
+    console.error(e);
+    res.json({status: 'exception'});
+  }
+});
+
+app.get("/api/events/thanks/entries", async (req, res) => {
+  try {
+
+    const collectionRef = collection(db, "thanks");
+    const q = query(collectionRef)
+    const qs = await getDocs(q); // query snapshot
+    const entries = [];
+    qs.forEach((doc) => {
+      entries.push(doc.data());
+    });
+
+    res.json({status: 'success', entries: entries});
+  } catch (e) {
+    console.error(e);
+    res.json({status: 'exception'});
+  }
+});
+
+app.post("/api/events/thanks/submit", async (req, res) => {
+  try {
+    // validate the parameter
+    const name = req.body.name;
+    const entry= req.body.entry;
+    if (name.trim() === '') {
+      res.json({
+        status: 'invalid',
+        field: 'name'
+      });
+      return;
+    }
+    if (entry.trim() === '') {
+      res.json({
+        status: 'invalid',
+        field: 'entry'
+      });
+      return;
+    }
+
+    // todo add submission to database
+    await addDoc(collection(db, "thanks"), {
+      name: name.trim(),
+      entry: entry.trim()
+    }).then(() => {
+      res.json({
+        status: 'success',
+        name: name.trim(),
+        entry: entry.trim()
+      });
+    }, () => {
+      res.json({
+        status: 'error',
+      });
     });
   } catch (e) {
     console.error(e);
