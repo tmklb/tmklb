@@ -15,7 +15,7 @@ export default function NavBar(props) {
 
   return (
     <nav className={styles.navbar}>
-      <div className={styles.container}>
+      <div className={`${styles.container} ${menuOpen ? styles.active : ''}`}>
         <a href="/" className={styles.logo}>
           <img src="/logo.svg" alt="TMKLB Logo"/>
         </a>

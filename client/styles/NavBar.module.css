@@ -135,20 +135,14 @@
   z-index: 1
 }
 
-/*@media (max-width: 600px) {*/
-/*  .logo {*/
-/*    margin-left: 50px;*/
-/*  }*/
-
-/*  .nav_links {*/
-/*    margin-right: 50px;*/
-/*  }*/
-/*}*/
-
 @media (max-width: 600px) {
   .container {
     display: block;
     padding: 0;
+  }
+
+  .container.active {
+    height: auto;
   }
 
   .logo {

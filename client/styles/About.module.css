@@ -3,6 +3,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  width: 100%;
 }
 
 .section {
@@ -11,6 +12,7 @@
   justify-content: center;
   align-items: center;
   margin-bottom: 50px;
+  width: 70%;
 }
 
 .section .title {
@@ -19,9 +21,7 @@
 }
 
 .section .info {
-  width: 650px;
   font-size: 18px;
-  /*text-align: center;*/
 }
 
 .section .row {
@@ -66,5 +66,43 @@
 }
 
 .spacer {
-  margin: 100px 0;
+  margin: 30px 0;
+}
+
+@media (max-width: 800px) {
+  .section .row {
+    flex-direction: column;
+  }
+
+  .section .row .item {
+    margin-bottom: 60px;
+  }
+
+  .section .row .item .profile {
+    width: 300px;
+    height: 300px;
+  }
+
+  .section .row .item .name {
+    font-size: 20px;
+  }
+
+  .section .row .item .subtitle {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 600px) {
+  .section .row .item .profile {
+    width: 200px;
+    height: 200px;
+  }
+
+  .section .row .item .name {
+    font-size: 18px;
+  }
+
+  .section .row .item .subtitle {
+    font-size: 12px;
+  }
 }

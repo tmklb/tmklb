@@ -33,31 +33,31 @@ export default function About() {
             </p>
           </div>
         </div>
-      </div>
-      <div className={styles.spacer}></div>
-      <div className={styles.section}>
-        <div className={`${styles.title} ${rubik600.className}`}>
-          Founders
-        </div>
-        <div className={styles.row}>
-          <div className={styles.item}>
-            <div className={styles.profile}>
-              <img src="/profile_yuup.jpg" alt="Profile Image"/>
-            </div>
-            <div className={styles.name}>Yuup</div>
-            <div className={styles.subtitle}>President</div>
+        <div className={styles.spacer}></div>
+        <div className={styles.section}>
+          <div className={`${styles.title} ${rubik600.className}`}>
+            Founders
           </div>
-          <div className={styles.item}>
-            <div className={styles.profile}>
-              <img src="/profile_sha.jpg" alt="Profile Image"/>
+          <div className={styles.row}>
+            <div className={styles.item}>
+              <div className={styles.profile}>
+                <img src="/profile_yuup.jpg" alt="Profile Image"/>
+              </div>
+              <div className={styles.name}>Yuup</div>
+              <div className={styles.subtitle}>(President)</div>
             </div>
-            <div className={styles.name}>Sha</div>
-          </div>
-          <div className={styles.item}>
-            <div className={styles.profile}>
-              <img src="/profile_mel.jpg" alt="Profile Image"/>
+            <div className={styles.item}>
+              <div className={styles.profile}>
+                <img src="/profile_sha.jpg" alt="Profile Image"/>
+              </div>
+              <div className={styles.name}>Sha</div>
             </div>
-            <div className={styles.name}>Mel</div>
+            <div className={styles.item}>
+              <div className={styles.profile}>
+                <img src="/profile_mel.jpg" alt="Profile Image"/>
+              </div>
+              <div className={styles.name}>Mel</div>
+            </div>
           </div>
         </div>
       </div>
