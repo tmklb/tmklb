@@ -15,6 +15,10 @@
   padding: 0 80px;
 }
 
+.logo {
+  display: inline-block;
+}
+
 .logo img {
   position: relative;
   top: 3px;
@@ -160,7 +164,7 @@
   .nav_links.open {
     display: block;
     width: 100%;
-    background-color: #f3effa;
+    /*background-color: #f3effa;*/
   }
 
   .nav_links:not(.open) {
