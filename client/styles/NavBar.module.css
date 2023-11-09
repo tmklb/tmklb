@@ -21,6 +21,7 @@
 
 .logo img {
   position: relative;
+  display: inline-block;
   top: 3px;
   width: 120px;
 }
@@ -151,7 +152,6 @@
 
   .logo {
     position: relative;
-    display: block;
     margin-bottom: 36px;
     top: 18px;
     margin-left: 30px;
@@ -164,7 +164,6 @@
   .nav_links.open {
     display: block;
     width: 100%;
-    /*background-color: #f3effa;*/
   }
 
   .nav_links:not(.open) {
@@ -214,6 +213,11 @@
 
   .nav_item .dropdown_items a {
     padding-bottom: 0;
+  }
+
+  .arrow,
+  .arrow_back {
+    display: none;
   }
 
   .nav_menu {
