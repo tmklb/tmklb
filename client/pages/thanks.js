@@ -30,6 +30,7 @@ import {IoIosCloseCircleOutline} from 'react-icons/io';
 export default function Thanks() {
   const [formOpen, setFormOpen] = useState(false);
   const [formSubmit, setFormSubmit] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [entries, setEntries] = useState([]);
 
   const baseUrl = "https://tmklb.onrender.com/api/events/thanks";
@@ -50,9 +51,20 @@ export default function Thanks() {
   useEffect(() => {
     function setup() {
       async function getData() {
+        const loadToast = toast.loading("Loading entries...", {
+          position: "bottom-center",
+          autoClose: 3000,
+          hideProgressBar: true,
+          draggable: false,
+          pauseOnHover: false,
+          pauseOnFocusLoss: false
+        });
         axios.get(baseUrl + '/entries')
           .then((data) => {
-            setEntries(data.data.entries || []);
+            const entries = data.data.entries || [];
+            toast.update(loadToast, { render: `Found ${entries.length} ${entries.length === 1 ? 'entry' : 'entries'}!`, type: "success", isLoading: false, autoClose: 5000 });
+            setEntries(entries);
+            setLoading(false);
           });
       }
       getData();
@@ -76,7 +88,7 @@ export default function Thanks() {
         <div className={`${styles.dishes} ${formOpen ? styles.hide : ''}`}>
           {
             rows.map((item, index) => {
-              return <div>{item}</div>
+              return <div key={index}>{item}</div>
             })
           }
         </div>
@@ -146,10 +158,10 @@ export default function Thanks() {
             </div>
           </form>
         </div>
-        <IoIosAddCircle className={`${styles.add} ${formOpen ? styles.hide : ''}`} onClick={() => {
+        <IoIosAddCircle className={`${styles.add} ${loading || formOpen ? styles.hide : ''}`} onClick={() => {
           setFormOpen(true);
         }} />
-        <IoIosCloseCircleOutline className={`${styles.add} ${!formOpen ? styles.hide : ''}`} onClick={() => {
+        <IoIosCloseCircleOutline className={`${styles.add} ${loading || !formOpen ? styles.hide : ''}`} onClick={() => {
           setFormOpen(false);
         }} />
       </div>
