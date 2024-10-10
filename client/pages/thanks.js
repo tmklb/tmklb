@@ -33,6 +33,10 @@ export default function Thanks() {
   const [loading, setLoading] = useState(true);
   const [entries, setEntries] = useState([]);
 
+  const currentYear = new Date().getFullYear();
+
+  const [year, setYear] = useState(currentYear);
+
   const baseUrl = "https://tmklb.onrender.com/api/events/thanks";
   // const baseUrl = "http://localhost:3001/api/events/thanks";
 
@@ -48,29 +52,35 @@ export default function Thanks() {
     </div>);
   });
 
+  async function getData(_year) {
+    const loadToast = toast.loading("Loading entries...", {
+      position: "bottom-center",
+      autoClose: 1000,
+      hideProgressBar: true,
+      draggable: false,
+      pauseOnHover: false,
+      pauseOnFocusLoss: false
+    });
+    axios.get(baseUrl + '/entries?year=' + (_year || currentYear))
+      .then((data) => {
+        const entries = data.data.entries || [];
+        toast.update(loadToast, { render: `Found ${entries.length} ${entries.length === 1 ? 'entry' : 'entries'}!`, type: "success", isLoading: false, autoClose: 2000 });
+        setEntries(entries);
+        setLoading(false);
+      });
+  }
+
   useEffect(() => {
     function setup() {
-      async function getData() {
-        const loadToast = toast.loading("Loading entries...", {
-          position: "bottom-center",
-          autoClose: 3000,
-          hideProgressBar: true,
-          draggable: false,
-          pauseOnHover: false,
-          pauseOnFocusLoss: false
-        });
-        axios.get(baseUrl + '/entries')
-          .then((data) => {
-            const entries = data.data.entries || [];
-            toast.update(loadToast, { render: `Found ${entries.length} ${entries.length === 1 ? 'entry' : 'entries'}!`, type: "success", isLoading: false, autoClose: 5000 });
-            setEntries(entries);
-            setLoading(false);
-          });
-      }
-      getData();
+      getData().then();
     }
     setup();
   }, []);
+
+  function selectYear(_year) {
+    setYear(_year);
+    getData(_year).then();
+  }
 
   return (
     <div>
@@ -85,11 +95,26 @@ export default function Thanks() {
         <div className={`${styles.header_small} ${rubikBold.className}`}>
           Food & Drinks
         </div>
+
+        <div className={styles.dates}>
+          <div className={(year === 2023 ? styles.selected : '')} onClick={() => {
+            selectYear(2023);
+          }}>
+            2023
+          </div>
+          <div className={(year === 2024 ? styles.selected : '')} onClick={() => {
+            selectYear(2024);
+          }}>
+            2024
+          </div>
+        </div>
+
         <div className={`${styles.dishes} ${formOpen ? styles.hide : ''}`}>
           {
-            rows.map((item, index) => {
-              return <div key={index}>{item}</div>
-            })
+            rows.length > 0 ?
+              rows.map((item, index) => {
+                return <div key={index}>{item}</div>
+              }) : <div className={styles.no_entries}>No entries 🤷‍♂️</div>
           }
         </div>
 
@@ -128,12 +153,12 @@ export default function Thanks() {
                   pauseOnFocusLoss: false
                 });
 
-                axios.post(baseUrl + '/submit', formJson)
+                axios.post(baseUrl + `/submit?year=${year}`, formJson)
                   .then((data) => {
                     console.log(data);
                     const status = data.data.status;
                     if (status === 'success') {
-                      toast.update(loadToast, { render: 'Submitted!', type: "success", isLoading: false, autoClose: 5000 });
+                      toast.update(loadToast, { render: 'Submitted!', type: "success", isLoading: false, autoClose: 2000 });
                       setFormSubmit(true);
                       setFormOpen(false);
                       const tmp = [...entries];
@@ -158,10 +183,10 @@ export default function Thanks() {
             </div>
           </form>
         </div>
-        <IoIosAddCircle className={`${styles.add} ${loading || formOpen ? styles.hide : ''}`} onClick={() => {
+        <IoIosAddCircle className={`${styles.add} ${loading || formOpen || (year < currentYear) ? styles.hide : ''}`} onClick={() => {
           setFormOpen(true);
         }} />
-        <IoIosCloseCircleOutline className={`${styles.add} ${loading || !formOpen ? styles.hide : ''}`} onClick={() => {
+        <IoIosCloseCircleOutline className={`${styles.add} ${loading || !formOpen || (year < currentYear) ? styles.hide : ''}`} onClick={() => {
           setFormOpen(false);
         }} />
       </div>

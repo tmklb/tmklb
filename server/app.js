@@ -99,9 +99,10 @@ app.get("/api/users/payments", async (req, res) => {
 
 app.get("/api/events/thanks/entries", async (req, res) => {
   try {
-
+    const year = req.query.year || '';
+    console.log(year);
     const collectionRef = collection(db, "thanks");
-    const q = query(collectionRef)
+    const q = query(collectionRef, where("year", "==", parseInt(year)))
     const qs = await getDocs(q); // query snapshot
     const entries = [];
     qs.forEach((doc) => {
@@ -117,9 +118,19 @@ app.get("/api/events/thanks/entries", async (req, res) => {
 
 app.post("/api/events/thanks/submit", async (req, res) => {
   try {
+    const year = req.query.year || '';
+    // reject past dates
+    if (year && (year < new Date().getFullYear())) {
+      res.json({
+        status: 'invalid',
+        field: 'year'
+      });
+      return;
+    }
+
     // validate the parameter
     const name = req.body.name;
-    const entry= req.body.entry;
+    const entry = req.body.entry;
     if (name.trim() === '') {
       res.json({
         status: 'invalid',
@@ -134,16 +145,25 @@ app.post("/api/events/thanks/submit", async (req, res) => {
       });
       return;
     }
+    if (!year) {
+      res.json({
+        status: 'invalid',
+        field: 'year'
+      });
+      return;
+    }
 
     // todo add submission to database
     await addDoc(collection(db, "thanks"), {
       name: name.trim(),
-      entry: entry.trim()
+      entry: entry.trim(),
+      year: parseInt(year)
     }).then(() => {
       res.json({
         status: 'success',
         name: name.trim(),
-        entry: entry.trim()
+        entry: entry.trim(),
+        year: year
       });
     }, () => {
       res.json({

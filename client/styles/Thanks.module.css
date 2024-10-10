@@ -39,13 +39,6 @@
   margin-right: 20px;
 }
 
-.dishes .item.even {
-  /*color: white;*/
-  /*background-color: #1982fc;*/
-  /*margin-right: 0;*/
-  /*margin-left: 10px;*/
-}
-
 .dishes .item .name {
   font-size: 18px;
   margin-bottom: 20px;
@@ -137,6 +130,40 @@
 
 .hide {
   display: none;
+}
+
+.dates {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 40px;
+}
+
+.dates div {
+  margin-left: 10px;
+  margin-right: 10px;
+  cursor: pointer;
+  transition: all 0.1s ease-in-out;
+}
+
+.dates div.selected {
+  color: #ffffff;
+  background-color: #6200ee;
+  padding: 10px 20px;
+  border-radius: 4px;
+}
+
+.dates div:active {
+  transform: scale(1.1);
+}
+
+.no_entries {
+  max-width: 550px;
+  text-align: center;
+  border-radius: 20px;
+  padding: 30px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 8px 0 rgba(99, 99, 99, .2);
 }
 
 @media (max-width: 600px) {
